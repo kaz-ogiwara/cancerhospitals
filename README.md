@@ -30,8 +30,7 @@
 Kazuki OGIWARA, Toyo Keizai Inc.  
 荻原 和樹（東洋経済オンライン編集部）  
 
-Twitter: <https://twitter.com/kaz_ogiwara>  
-GitHub.io（ポートフォリオ）: <https://kaz-ogiwara.github.io/>  
-
+[Twitter](https://twitter.com/kaz_ogiwara) / [GitHub.io](https://kaz-ogiwara.github.io/)（ポートフォリオ）  
+  
 コードやデータをご活用いただいた事例やご感想などをお送りいただくと、公開が続けやすくなります。  
 よろしければご協力をお願いいたします。
