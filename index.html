@@ -1,0 +1,238 @@
+<!doctype html>
+<html class="no-js" lang="ja">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
+		<meta name="format-detection" content="telephone=no">
+		<meta property="og:url" content="https://toyokeizai.net/sp/visual/tko/cancerhospitals/" />
+		<meta property="og:type" content="article" />
+		<meta property="og:title" content="全国「がん医療病院」診療実績マップ" />
+		<meta property="og:description" content="厚生労働省の発表するデータから全国3701病院におけるがん診療実績をマッピング。疾患の種類や手術の有無などから病院を検索できる。" />
+		<meta property="og:image" content="https://toyokeizai.net/sp/visual/tko/cancerhospitals/img/image_1200_630.png" />
+		<meta name="twitter:card" content="summary_large_image" />
+		<link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.1/dist/leaflet.css" integrity="sha512-Rksm5RenBEKSKFjgI3a41vrjkw4EVPlJ3+OiI65vTjIdo9brlAacEuKOiQ5OFh7cOI1bkDwLqdLw3Zg0cRJAAQ==" crossorigin=""/>
+		<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.3.0/dist/MarkerCluster.css" />
+		<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.3.0/dist/MarkerCluster.Default.css" />
+    <link rel="stylesheet" href="css/style.min.css"/>
+		<title>全国「がん医療病院」診療実績マップ</title>
+	</head>
+	<body>
+		<div id="cover"></div>
+		<div id="chartjs-tooltip">
+			<h5 class="title"></h5>
+		</div>
+		<div id="modal">
+			<button id="button-modal-close"></button>
+			<div class="text-area">
+				<div class="inner">
+					<h5></h5>
+					<table id="modal-items">
+						<tbody>
+							<tr><th>所在地</th><td></td></tr>
+							<tr><th>二次医療圏</th><td></td></tr>
+							<tr><th>設立母体</th><td></td></tr>
+							<tr><th>がん拠点病院分類</th><td></td></tr>
+							<tr><th>病院類型</th><td></td></tr>
+							<tr><th>DPC算定病床の入院基本料</th><td></td></tr>
+							<tr><th>DPC算定病床数</th><td></td></tr>
+							<tr><th>病床総数</th><td></td></tr>
+						</tbody>
+					</table>
+					<div id="modal-values-area"></div>
+					<p class="notes"></p>
+				</div>
+			</div>
+		</div>
+    <div id="container">
+			<div id="header-block">
+				<a href="https://toyokeizai.net/">
+					<img id="img-logo" src="img/logo-tko.png" />
+				</a>
+			</div>
+			<div id="title-block">
+				<h1>全国「がん医療病院」診療実績マップ</h1>
+				<p>厚生労働省の発表するデータから全国3701病院におけるがん診療実績をマッピング。疾患の種類や手術の有無などから病院を検索できる。</p>
+				<div class="date">2019年8月3日</div>
+				<p>解説記事：<a href="https://toyokeizai.net/articles/-/294037" target="_blank">がん診療「実績データ」マップで見る病院選び - 東洋経済オンライン</a></p>
+			</div>
+			<div id="controls-block">
+				<div class="controls-box">
+					<div class="title">病院の情報で絞り込む</div>
+					<div class="control half l">
+						<div class="label">都道府県</div>
+						<select id="select-prf">
+							<option value="">すべて</option>
+							<option value="1">北海道</option>
+							<option value="2">青森県</option>
+							<option value="3">岩手県</option>
+							<option value="4">宮城県</option>
+							<option value="5">秋田県</option>
+							<option value="6">山形県</option>
+							<option value="7">福島県</option>
+							<option value="8">茨城県</option>
+							<option value="9">栃木県</option>
+							<option value="10">群馬県</option>
+							<option value="11">埼玉県</option>
+							<option value="12">千葉県</option>
+							<option value="13">東京都</option>
+							<option value="14">神奈川県</option>
+							<option value="15">新潟県</option>
+							<option value="16">富山県</option>
+							<option value="17">石川県</option>
+							<option value="18">福井県</option>
+							<option value="19">山梨県</option>
+							<option value="20">長野県</option>
+							<option value="21">岐阜県</option>
+							<option value="22">静岡県</option>
+							<option value="23">愛知県</option>
+							<option value="24">三重県</option>
+							<option value="25">滋賀県</option>
+							<option value="26">京都府</option>
+							<option value="27">大阪府</option>
+							<option value="28">兵庫県</option>
+							<option value="29">奈良県</option>
+							<option value="30">和歌山県</option>
+							<option value="31">鳥取県</option>
+							<option value="32">島根県</option>
+							<option value="33">岡山県</option>
+							<option value="34">広島県</option>
+							<option value="35">山口県</option>
+							<option value="36">徳島県</option>
+							<option value="37">香川県</option>
+							<option value="38">愛媛県</option>
+							<option value="39">高知県</option>
+							<option value="40">福岡県</option>
+							<option value="41">佐賀県</option>
+							<option value="42">長崎県</option>
+							<option value="43">熊本県</option>
+							<option value="44">大分県</option>
+							<option value="45">宮崎県</option>
+							<option value="46">鹿児島県</option>
+							<option value="47">沖縄県</option>
+						</select>
+					</div><div class="control half r">
+						<div class="label">がん拠点病院分類</div>
+						<select id="select-cbh">
+							<option value="">すべて</option>
+							<option value="2">国立がん研究センター</option>
+							<option value="3">地域がん診療病院</option>
+							<option value="4">地域がん診療連携拠点病院</option>
+							<option value="5">地域がん診療連携拠点病院（高度型）</option>
+							<option value="6">特定領域がん診療連携拠点病院</option>
+							<option value="7">都道府県がん診療連携拠点病院</option>
+							<option value="8">都道府県独自指定がん拠点病院</option>
+							<option value="1">（拠点指定なし）</option>
+						</select>
+					</div>
+				</div>
+				<div class="controls-box">
+					<div class="title">診療の実績で絞り込む</div>
+					<div class="control">
+						<div class="label">疾患の種類</div>
+						<select id="select-mdc">
+							<option value="">すべて</option>
+							<option value="23">肺がん（肺の悪性腫瘍）</option>
+							<option value="20">大腸（結腸）がん（結腸（虫垂を含む）の悪性腫瘍）</option>
+							<option value="24">胃がん（胃の悪性腫瘍）</option>
+							<option value="5">前立腺がん（前立腺の悪性腫瘍）</option>
+							<option value="3">乳がん（乳房の悪性腫瘍）</option>
+							<option value="22">肝臓がん（肝・肝内胆管の悪性腫瘍（続発性を含む））</option>
+							<option value="18">大腸（直腸）がん（直腸肛門（直腸Ｓ状部から肛門）の悪性腫瘍）</option>
+							<option value="32">膀胱がん（膀胱腫瘍）</option>
+							<option value="10">子宮頸がん（子宮頸・体部の悪性腫瘍）</option>
+						</select>
+					</div>
+					<div class="control half l">
+						<div class="label">手術の有無</div>
+						<select id="select-opr">
+							<option value="">すべて</option>
+							<option value="1">あり</option>
+							<option value="2">なし</option>
+						</select>
+					</div><div class="control half r">
+						<div class="label">化学療法・放射線等の有無</div>
+						<select id="select-trt">
+							<option value="">すべて</option>
+							<option value="1">あり</option>
+							<option value="2">なし</option>
+						</select>
+					</div>
+				</div>
+			</div>
+			<div id="map-block">
+				<div id="name-area">
+					<input type="text" id="input-name" placeholder="病院名で検索">
+					<div id="name-suggests"></div>
+				</div>
+				<div id="map"></div>
+		    <div id="map-cover" class="show">
+		      <p>データをロードしています。<br />しばらくお待ちください。。。</p>
+		    </div>
+				<button id="button-close"></button>
+			</div>
+			<div id="fullscreen-block">
+				<a id="fullscreen-button">全画面で見る</a>
+			</div>
+			<div id="bubble-block"></div>
+			<div id="tables-block">
+				<h4>診療件数が多い病院</h4>
+				<div class="table-box">
+					<table id="table-num">
+						<thead>
+							<tr>
+								<th>病院名</th>
+								<th>がん拠点病院分類</th>
+								<th class="r">診療件数</th>
+								<th class="r">平均在院日数</th>
+							</tr>
+						</thead>
+						<tbody></tbody>
+					</table>
+				</div>
+				<h4>平均在院日数が短い病院</h4>
+				<div class="table-box">
+					<table id="table-days">
+						<thead>
+							<tr>
+								<th>病院名</th>
+								<th>がん拠点病院分類</th>
+								<th class="r">診療件数</th>
+								<th class="r">平均在院日数</th>
+							</tr>
+						</thead>
+						<tbody></tbody>
+					</table>
+				</div>
+			</div>
+			<div id="article-block">
+				<p>厚生労働省では毎年、包括医療費支払い制度（DPC）の対象となった病院の<a href="https://www.mhlw.go.jp/stf/shingi2/0000196043_00001.html" target="_blank">退院患者に関するデータ</a>を公開している。DPCとは、入院患者の医療費について検査や投薬といった診療行為ごとに計算する従来の出来高払い方式とは異なり、疾患（主要診断群）や治療内容に応じた1日当たりの定額医療費を基に全体の医療費を計算する制度である（一部の診療は従来通り出来高払い方式で計算される）。</p>
+				<p>今回、東洋経済オンライン編集部では、DPCデータの2017年度における退院患者データから全国の病院3701カ所を検索できるマップを制作した。疾患の種類、手術の有無などから病院を検索し、該当する診療の件数や平均の在院（入院）日数を確認できる。</p>
+				<h5>マップの見方</h5>
+				<p>マップには調査対象の3701病院が表示されている。「病院の情報で絞り込む」「診療の実績で絞り込む」から病院の所在地、疾患の種類などに応じて絞り込むことができる。またマップの病院、マップ下の散布図「診療件数と平均在院日数の分布」の点や「診療件数が多い病院」「平均在院日数が短い病院」の病院名をクリックすると、その病院の詳細情報が表示される。ただし診療件数は10件以上のデータのみ公開されているため、10件未満の場合は「0」と表示される。</p>
+				<h5>掲載データについて</h5>
+				<p>診療データは厚生労働省が2019年2月に発表した<a href="https://www.mhlw.go.jp/stf/shingi2/0000196043_00001.html" target="_blank">平成29年度DPC導入の影響評価に係る調査「退院患者調査」</a>（病院類型、DPC算定病床の入院基本料、DPC算定病床数、病床総数、該当診療件数、平均在院日数）を<a href="https://www.ghc-j.com/" target="_blank">グローバルヘルスコンサルティング・ジャパン</a>（GHC）が集計したもの。調査の対象は、2017年（平成29年）4月から翌年3月に退院または転棟した患者のうち、在院（入院）日数が2日以上のデータ。また、24時間以内の死亡や自費診療のみのケースなどは含まれない。詳細は同省発表の「<a href="https://www.mhlw.go.jp/content/12404000/000479265.pdf" target="_blank">分析対象データについて</a>」を参照。診療データの算出期間が12ヶ月に満たない場合、比較のため12ヶ月分に換算した。病院データ（所在地、二次医療圏、設立母体）はGHC保有のデータベースから。都道府県独自指定のがん拠点病院はすべて「都道府県独自指定がん拠点病院」で統一した。</p>
+				<br /><br />
+				<p class="small">データのダウンロード、ソースコード、修正履歴は<a href="https://github.com/kaz-ogiwara/" target="_blank">GitHub</a>から</p>
+				<p class="small">制作：<a href="https://toyokeizai.net/list/author/%E8%8D%BB%E5%8E%9F_%E5%92%8C%E6%A8%B9" target="_blank">荻原 和樹</a>（東洋経済オンライン編集部）</p>
+			</div>
+			<div id="social-block">
+				<a class="fbshare" href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2ftoyokeizai%2enet%2fsp%2fvisual%2ftko%2fcancerhospitals%2f" target="_blank"></a>
+				<a class="twitter" href="https://twitter.com/intent/tweet?url=https%3a%2f%2ftoyokeizai%2enet%2fsp%2fvisual%2ftko%2fcancerhospitals%2f" target="_blank"></a>
+				<a class="gplus"   href="https://plus.google.com/share?url=https%3a%2f%2ftoyokeizai%2enet%2fsp%2fvisual%2ftko%2fcancerhospitals%2f" target="_blank"></a>
+				<a class="line"    href="https://social-plugins.line.me/lineit/share?url=https%3a%2f%2ftoyokeizai%2enet%2fsp%2fvisual%2ftko%2fcancerhospitals%2f" target="_blank"></a>
+			</div>
+			<div id="footer-block">
+				<hr>
+				<a href="http://corp.toyokeizai.net/">
+					<img id="img-corporate" src="img/logo-corporate.png" alt="東洋経済新報社">
+				</a>
+				<p>Copyright &copy; Toyo Keizai Inc. All Rights Reserved.</p>
+			</div>
+    </div>
+		<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"></script>
+		<script src="https://unpkg.com/leaflet@1.3.1/dist/leaflet.js" integrity="sha512-/Nsx9X4HebavoBvEBuyp3I7od5tA0UzAxs+j83KgC8PU0kgB4XiK4Lfe4y4cgBtaRJQEIFCW+oC506aPT2L1zw==" crossorigin=""></script>
+		<script src="https://unpkg.com/leaflet.markercluster@1.3.0/dist/leaflet.markercluster.js"></script>
+		<script src="js/script.min.js"></script>
+	</body>
+</html>
